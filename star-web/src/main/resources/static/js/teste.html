@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>HTML</title>
+        <script src="jquery-3.2.1.min.js"></script>
+        <script>
+            $(function() {
+              $('h2').html('aleph');
+              var m = new Map();
+              m.set("MG", {"nome":"Minas Gerais", "peso": 3000});
+              m.set("MA", {"nome":"Maranhão", "peso": 2400});
+              m.set("CE", {"nome":"Ceará", "peso": 1800});
+              
+              m.forEach(function(v, k){
+                console.log( v.nome + " - " + v.peso);
+                console.log("----------------------------");
+              },m);
+              
+              var uf = m.get("MA");
+              console.log( uf.nome + " - " + uf.peso);
+              
+              var teste = {"data":[	{"va": 01, "vb": 10, "dsc": "f0f"},
+                                    {"va": 11, "vb": 20, "dsc": "0ff"},
+                                    {"va": 21, "vb": 30, "dsc": "0f0"},
+                                    {"va": 31, "vb": 40, "dsc": "ff0"}
+                                   ]};
+              var x = 19;
+              for (i = 0; i < teste.data.length; i++){
+                if ((x >= teste.data[i].va) && (x <= teste.data[i].vb))
+                {
+                    $('h2').css('color',teste.data[i].dsc);
+                    console.log(teste.data[i].vb);	
+                    break;
+                }
+              }
+            });
+        </script>
+    </head>
+        <body>
+            <h2>alfa</h2>
+        </body>	
+    </html>

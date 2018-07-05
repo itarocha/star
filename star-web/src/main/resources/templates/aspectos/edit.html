@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ layout:decorator="layouts/LayoutPadrao">
+
+<head>
+	<title>Aspecto</title>
+</head>
+
+<section layout:fragment="titulo">Aspecto</section>
+
+<section layout:fragment="conteudo">
+
+	<form method="POST" th:action="@{/aspectos}" th:object="${model}">
+		<div layout:include="layouts/MensagemErro"></div>
+		<div layout:include="layouts/MensagemGeral"></div>
+
+		<input type="hidden" th:field="*{id}"></input>
+
+		<div class="row">
+			<div class="form-group col-md-2">
+				<label for="planetaOrigem">Planeta Origem:</label>
+				<select class="form-control" id="planetaOrigem" name="planetaOrigem" th:field="*{planetaOrigem}">
+					<option th:each="obj : ${listaPlanetas}" th:value="${obj}" th:text="${obj.descricao}"></option>
+				</select>
+			</div>
+			<div class="form-group col-md-2">
+				<label for="aspecto">Aspecto:</label>
+				<select class="form-control" id="aspecto" name="aspecto" th:field="*{aspecto}">
+					<option th:each="a : ${listaAspectos}" th:value="${a}" th:text="${a.descricao}"></option>
+				</select>
+			</div>
+			<div class="form-group col-md-2">
+				<label for="planetaDestino">Planeta Destino:</label>
+				<select class="form-control" id="planetaDestino" name="planetaDestino" th:field="*{planetaDestino}">
+					<option th:each="obj : ${listaPlanetas}" th:value="${obj}" th:text="${obj.descricao}"></option>
+				</select>
+			</div>
+			<div class="form-group col-md-2">
+				<label for="tipoRelacao">Tipo Aspecto:</label>
+				<select class="form-control" id="tipoRelacao" name="tipoRelacao" th:field="*{tipoRelacao}">
+					<option th:each="obj : ${listaRelacoes}" th:value="${obj}" th:text="${obj.descricao}"></option>
+				</select>
+			</div>
+			<div class="form-group col-md-4 divAspectoMestre">
+				<label for="aspectoMestre">Mestre:</label>
+				<select class="form-control" id="aspectoMestre" name="aspectoMestre" th:field="*{aspectoMestre}">
+					<option th:each="s : ${listaMaster}" th:value="${s.id}" th:text="${s.descricaoResumida}"></option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-12 divTexto">
+				<label for="texto">Texto:</label>
+				<textarea class="form-control" rows="10" id="texto" name="texto" th:field="*{texto}"></textarea>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-2">
+				<label for="conferido">Conferido?</label>
+				<select class="form-control" id="conferido" name="conferido" th:field="*{conferido}">
+					<option th:each="obj : ${listaLogico}" th:value="${obj}" th:text="${obj.descricao}"></option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<button type="submit" class="btn btn-primary">Salvar</button>
+				<a class="btn btn-default" role="button" th:href="@{/aspectos}">Voltar</a>
+			</div>
+		</div>
+	</form>
+
+	<script>
+		$(function () {
+			$("#descricao").focus();
+			
+			// On change, aspectoMestre fica invisível quando tipoRelacao = "MESTRE"
+			//$("#tipoRelacao").change();
+			
+			$("#tipoRelacao").change(function () {
+				//calcularPctGorduraCorporal();
+				var tipoRelacao = $('#tipoRelacao').val().toLowerCase();
+				//alert(tipoRelacao);
+				
+				if (tipoRelacao == "mestre") {
+					$( ".divAspectoMestre" ).hide();
+					$( ".divTexto" ).show();
+				} else {
+					$( ".divAspectoMestre" ).show();
+					$( ".divTexto" ).hide();
+				}
+				
+				//$("#aspectoMestre").setVisible(tipoRelacao == "mestre");
+				
+				//if (tipoRelacao.equals("mestre")) {}
+			});			
+			
+			$("#tipoRelacao").change();
+		});
+	</script>
+
+</section>
+
+</html>

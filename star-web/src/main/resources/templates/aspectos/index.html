@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="layouts/LayoutPadrao">
+<head>
+	<title>Aspectos</title>
+</head>
+
+<section layout:fragment="titulo">Aspectos <a class="btn btn-success" th:href="@{/aspectos/new}">Novo</a></section>
+
+<section layout:fragment="conteudo">
+	<div layout:include="layouts/MensagemGeral"></div>
+	
+	<div class="row">
+		<div class="row col-md-2" th:each="item: ${lista}" >
+			<div class="panel panel-default" style="margin:2px;" th:classappend="${item.foiConferido} ? fundo-verde : fundo-branco">
+			  <div class="panel-body" style="text-align:center;" >
+			  	<p style="font-size:12pt; font-weight:500; " th:text="${item.planetaOrigem + ' ' + #strings.toLowerCase(item.aspecto) + ' ' + item.planetaDestino }"></p>
+			  	<p style="font-size:12pt; font-weight:500;" th:if="${item.aspectoMestre != null}" th:text="${'(' + item.aspectoMestre.planetaOrigem + ' ' + #strings.toLowerCase(item.aspectoMestre.aspecto) + ' ' + item.aspectoMestre.planetaDestino + ')'}"></p>
+			  	<p style="font-size:12pt; font-weight:500;" th:if="${item.aspectoMestre == null}">&nbsp;</p>
+				<a class="btn btn-link btn-xs" th:href="@{/aspectos/edit/{id}(id=${item.id})}"
+							title="Editar" rel="tooltip" data-placement="top">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</a>
+						<a class="btn btn-link btn-xs" data-toggle="modal" data-target="#confirmacaoExclusaoModal"
+							th:attr="data-codigo=${item.id}, data-descricao=${item.planetaOrigem.descricao + ' ' + item.aspecto.descricao + ' ' + item.planetaDestino.descricao}"
+							title="Excluir" rel="tooltip" data-placement="top">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>			  
+			  </div>
+			</div>	
+		</div>
+	</div>
+
+	<div class="modal fade"	id="confirmacaoExclusaoModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog">
+		
+			<form th:attr="action=@{/aspectos/delete}" method="POST">
+				<input type="hidden" name="_method" value="DELETE"/>
+		
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Você tem certeza?</h4>
+					</div>
+					
+					<div class="modal-body">
+						<span>Tem certeza que deseja excluir?</span>
+					</div>
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						<button type="submit" class="btn btn-danger">Excluir</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>	
+	<script th:src="@{/js/exclusao.js}"></script>
+		
+</section>
+
+</html>

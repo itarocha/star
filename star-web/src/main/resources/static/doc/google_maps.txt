@@ -1,0 +1,149 @@
+http://pt.stackoverflow.com/questions/90936/api-google-maps-localização-a-partir-do-endereço
+
+results[0].geometry.location.lat;
+results[0].geometry.location.lng;
+
+
+https://code.google.com/apis/console
+API ACCESS
+pegar API key
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 100%; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript">
+
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: -34.397, lng: 150.644},
+    zoom: 8
+  });
+}
+
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>
+  </body>
+</html>
+
+
+
+https://developers.google.com/maps/documentation/javascript/tutorial
+
+
+
+
+https://developers.google.com/maps/documentation/javascript/examples/marker-simple
+
+window.onload = function() {
+    var latlng = new google.maps.LatLng(-22.8960696, -43.1737186);
+    var map = new google.maps.Map(document.getElementById('map'), {
+        center: latlng,
+        zoom: 11,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+    var marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        title: 'Set lat/lon values for this property',
+        draggable: true
+    });
+    google.maps.event.addListener(marker, 'dragend', function(a) {
+        console.log(a);
+        var div = document.createElement('div');
+        div.innerHTML = a.latLng.lat().toFixed(4) + ', ' + a.latLng.lng().toFixed(4);
+        document.getElementsByTagName('body')[0].appendChild(div);
+    });
+};
+
+#map {
+  height: 300px;
+  border: 1px solid #000;
+}
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false">
+</script>
+<div id="map"></div>
+
+
+
+
+http://maps.google.com/maps/api/geocode/json?address=Avenida%20Imbauba,%201400%20Uberlandia%20MG&sensor=false
+
+O Google devolve algo assim:
+
+
+{
+   "results" : [
+      {
+         "address_components" : [
+            {
+               "long_name" : "1400",
+               "short_name" : "1400",
+               "types" : [ "street_number" ]
+            },
+            {
+               "long_name" : "Avenida Imbaúbas",
+               "short_name" : "Av. Imbaúbas",
+               "types" : [ "route" ]
+            },
+            {
+               "long_name" : "Jaraguá",
+               "short_name" : "Jaraguá",
+               "types" : [ "political", "sublocality", "sublocality_level_1" ]
+            },
+            {
+               "long_name" : "Uberlândia",
+               "short_name" : "Uberlândia",
+               "types" : [ "administrative_area_level_2", "political" ]
+            },
+            {
+               "long_name" : "Minas Gerais",
+               "short_name" : "MG",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "Brasil",
+               "short_name" : "BR",
+               "types" : [ "country", "political" ]
+            },
+            {
+               "long_name" : "38413",
+               "short_name" : "38413",
+               "types" : [ "postal_code", "postal_code_prefix" ]
+            }
+         ],
+         "formatted_address" : "Av. Imbaúbas, 1400 - Jaraguá, Uberlândia - MG, Brasil",
+         "geometry" : {
+            "location" : {
+               "lat" : -18.9286356,
+               "lng" : -48.3172924
+            },
+            "location_type" : "ROOFTOP",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : -18.9272866197085,
+                  "lng" : -48.3159434197085
+               },
+               "southwest" : {
+                  "lat" : -18.9299845802915,
+                  "lng" : -48.3186413802915
+               }
+            }
+         },
+         "partial_match" : true,
+         "place_id" : "ChIJOxA2CH9EpJQRK1JRKC3ryvg",
+         "types" : [ "street_address" ]
+      }
+   ],
+   "status" : "OK"
+}

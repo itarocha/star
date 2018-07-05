@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<div th:fragment="novo">
+	<div class="modal fade"	id="inclusaoConsultaModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog">
+		
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Informe abaixo a data de agendamento da consulta</h4>
+					</div>
+					
+                    <form role="form" id="formNewConsulta" th:attr="action=@{/api/consulta/new}">
+						<div class="modal-body">
+							<input type="hidden" name="idCliente" id="idCliente"></input>
+							<div class="form-group">
+								<label for="dataAgenda">Data de Agendamento:</label>
+								<input type="text" class="form-control formatoData" id="dataAgenda" name="dataAgenda"
+					 			data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-language="pt-BR" data-date-autoclose="true" data-date-today-highlight="true"
+					 			data-date-orientation="bottom"></input>
+							</div>					
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-success">Agendar</button>
+						</div>
+                    </form>
+				</div>
+		</div>
+	</div>	
+	<script th:src="@{/js/agendar-consulta.js}"></script>
+</div>
+</html>

@@ -1,0 +1,106 @@
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorator="layouts/LayoutPadrao">
+
+<head>
+  <title>Função de Liderança</title>
+</head>
+
+<section layout:fragment="titulo">Função de Liderança</section>
+
+<section layout:fragment="conteudo">
+
+  <form method="POST" th:action="@{/funcoeslideranca}" th:object="${model}">
+
+    <div layout:include="layouts/MensagemErro"></div>
+    <div layout:include="layouts/MensagemGeral"></div>
+
+    <input type="hidden" th:field="*{id}"></input>
+
+    <div class="row">
+      <div class="form-group col-sm-6 col-md-6">
+        <label for="descricao">Descrição:</label>
+        <input type="text" class="form-control" id="descricao" name="descricao" th:field="*{descricao}"></input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a class="btn btn-default" role="button" th:href="@{/funcoeslideranca}">Voltar</a>
+      </div>
+    </div>
+  </form>
+
+<!-- 	
+  <div class="row">
+    <div class="col-sm-6 col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading no-collapse">Not Collapsible<span class="label label-warning pull-right">+10</span></div>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Username</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mark</td>
+              <td>Tompson</td>
+              <td>the_mark7</td>
+            </tr>
+            <tr>
+              <td>Ashley</td>
+              <td>Jacobs</td>
+              <td>ash11927</td>
+            </tr>
+            <tr>
+              <td>Audrey</td>
+              <td>Ann</td>
+              <td>audann84</td>
+            </tr>
+            <tr>
+              <td>John</td>
+              <td>Robinson</td>
+              <td>jr5527</td>
+            </tr>
+            <tr>
+              <td>Aaron</td>
+              <td>Butler</td>
+              <td>aaron_butler</td>
+            </tr>
+            <tr>
+              <td>Chris</td>
+              <td>Albert</td>
+              <td>cab79</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  -->
+  <script>
+    $(function () {
+      var rowCount = $("#horarios tr").length;
+
+      $("#descricao").focus();
+      $("#dataNascimento").mask("99/99/9999");
+      //$("#cpf").mask("999.999.999-99");
+      $("#endereco_cep").mask("99999-999");
+      //$(".fmthora").mask("99:99");
+      //$(".horarioid").attr("name","horarios[].id");
+      //$(".fmthora").attr("name","horarios[].horario");
+
+      //$(".horarioid").removeAttr("id");
+      //$(".fmthora:text").removeAttr("id");
+
+    });
+  </script>
+
+</section>
+
+</html>

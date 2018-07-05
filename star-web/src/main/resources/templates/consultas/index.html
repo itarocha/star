@@ -1,0 +1,157 @@
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorator="layouts/LayoutPadrao">
+
+<head>
+	<title>Consultas</title>
+</head>
+
+<section layout:fragment="titulo">Consultas</section>
+
+<section layout:fragment="conteudo">
+	<div layout:include="layouts/MensagemGeral"></div>
+	<div th:replace="layouts/fragments/paginaExclusao::modal(link=@{/clientes/consultas/delete})"></div>
+	
+		<div class="row">
+			<div class="form-group col-md-4">
+				<label for="endereco_latitude">Nome:</label>
+				<h4 th:text="${model.nome}"></h4>
+			</div>
+			<div class="form-group col-md-1">
+				<label for="endereco_longitude">Nascimento:</label>
+				<h5 th:text="${{model.dataNascimento}}"></h5>
+			</div>
+			<div class="form-group col-md-1">
+				<label for="endereco_longitude">Idade:</label>
+				<h5 th:text="${{model.idade}}"></h5>
+			</div>
+			<div class="form-group col-md-1">
+				<label>Altura (m):</label>
+				<h5 th:text="${{model.alturaMetros}}"></h5>
+			</div>
+			<div class="form-group col-md-1">
+				<label for="endereco_longitude">Sexo:</label>
+				<h5 th:text="${model.sexo}"></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-md-6">
+				<a class="btn btn-default" role="button" th:href="@{/clientes}">Voltar</a>
+				<a class="btn btn-success btnInclusaoConsultaModal" data-toggle="modal" th:attr="data-codigo=${model.id}, data-descricao=${model.nome}"
+							title="Agendar Consulta" rel="tooltip" data-placement="top">Agendar Consulta</a>	
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-4">
+			
+				<div class="panel panel-default">
+				  <div class="panel-heading fundo-verde">Consultas</div>
+				  <div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>Agenda/Consulta</th>
+									<th>Realizada?</th>
+									<th class="text-center col-md-4">&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="item: ${consultas}" th:class="${item.realizada} == 'N' ? 'bg-danger' : ''">
+									<td th:text="${item.realizada} == 'S' ? ${{item.dataConsulta}} : ${{item.dataAgenda}}"></td>
+									<td class="text-center" th:text="${item.realizada} == 'S' ? 'Sim' : 'Não'"></td>
+									<td class="text-center">
+										<a class="btn btn-link btn-xs" th:href="@{/consultas/edit/{id}(id=${item.id})}"
+											title="Editar" rel="tooltip" data-placement="top">
+											<span class="glyphicon glyphicon-pencil"></span>
+										</a>
+										<a class="btn btn-link btn-xs" data-toggle="modal" data-target="#confirmacaoExclusaoModal"
+											th:attr="data-codigo=${item.id}, data-descricao=${{item.dataCalculada}}"
+											title="Excluir" rel="tooltip" data-placement="top">
+											<span class="glyphicon glyphicon-remove"></span>
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3" th:if="${#lists.isEmpty(consultas)}">Sem informações para apresentar</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				  </div>
+				</div>			
+			
+			</div>
+			<div class="form-group col-md-4">
+				<div class="panel panel-default">
+				  <div class="panel-heading fundo-verde">Peso</div>
+				  <div class="panel-body">
+					<div class="chart-container">
+						<canvas id="chartPeso"></canvas>
+					</div>
+				  </div>
+				</div>			
+			</div>
+
+			<div class="form-group col-md-4">
+				<div class="panel panel-default">
+				  <div class="panel-heading fundo-verde">Gordura Corporal</div>
+				  <div class="panel-body">
+					<div class="chart-container">
+						<canvas id="chartGorduraCorporal"></canvas>
+					</div>
+				  </div>
+				</div>			
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-md-4">
+				<div class="panel panel-default">
+				  <div class="panel-heading fundo-verde">Índice Massa Corporal</div>
+				  <div class="panel-body">
+					<div class="chart-container">
+						<canvas id="chartMassaCorporal"></canvas>
+					</div>
+				  </div>
+				</div>			
+			</div>
+
+			<div class="form-group col-md-4">
+				<div class="panel panel-default">
+				  <div class="panel-heading fundo-verde">Percentual Muscular</div>
+				  <div class="panel-body">
+					<div class="chart-container">
+						<canvas id="chartMuscular"></canvas>
+					</div>
+				  </div>
+				</div>			
+			</div>
+		
+			<div class="form-group col-md-4">
+				<div class="panel panel-default">
+				  <div class="panel-heading fundo-verde">Gordura Visceral</div>
+				  <div class="panel-body">
+					<div class="chart-container">
+						<canvas id="chartGorduraVisceral"></canvas>
+					</div>
+				  </div>
+				</div>			
+			</div>
+		
+		</div>
+
+	<script th:src="@{/js/cliente-consultas.js}"></script>
+	<script th:inline="javascript">
+		var graficoData = [[${graficoData}]] ;
+
+		$(function(){
+			buildGraficos(graficoData);
+		});
+	</script>
+	<div th:replace="layouts/fragments/paginaAcoesConsulta::novo"></div>
+
+</section>
+
+</html>

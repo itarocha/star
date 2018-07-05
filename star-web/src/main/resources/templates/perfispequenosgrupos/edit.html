@@ -1,0 +1,53 @@
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorator="layouts/LayoutPadrao">
+
+<head>
+	<title>Perfil de Pequeno Grupo</title>
+</head>
+
+<section layout:fragment="titulo">Perfil de Pequeno Grupo</section>
+
+<section layout:fragment="conteudo">
+
+	<form method="POST" th:action="@{/perfispequenosgrupos}" th:object="${model}">
+
+		<div layout:include="layouts/MensagemGeral"></div>
+		<div layout:include="layouts/MensagemErro"></div>
+
+		<input type="hidden" th:field="*{id}"></input>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="descricao">Descrição:</label>
+				<input type="text" class="form-control" id="descricao" name="descricao" th:field="*{descricao}"></input>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<button type="submit" class="btn btn-primary">Salvar</button>
+				<a class="btn btn-default" role="button" th:href="@{/perfispequenosgrupos}">Voltar</a>
+			</div>
+		</div>
+
+	</form>
+	<script>
+		$(function () {
+			var rowCount = $("#horarios tr").length;
+			$("#descricao").focus();
+			$("#dataNascimento").mask("99/99/9999");
+			//$("#cpf").mask("999.999.999-99");
+			$("#endereco_cep").mask("99999-999");
+			//$(".fmthora").mask("99:99");
+			//$(".horarioid").attr("name","horarios[].id");
+			//$(".fmthora").attr("name","horarios[].horario");
+			//$(".horarioid").removeAttr("id");
+			//$(".fmthora:text").removeAttr("id");
+		});
+	</script>
+
+</section>
+
+</html>

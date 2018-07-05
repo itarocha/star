@@ -1,0 +1,52 @@
+Deploy no Tomcat externo
+
+Jogar o .war no /webapps
+-------------------------------------------------
+Para gerar war
+
+No pom.xml, <build>, adicionar
+<finalName>${project.artifactId}</finalName>
+
+Run As / maven build...
+
+Titulo: starweb-war
+Goals: clean package
+
+Botão direito: Refresh
+Criou uma série de arquivos no target
+
+Run As "starweb-war"
+
+Agora virou target/starweb.war
+
+Copiar para tomcat/webapps
+
+Verificar o opt/tomcat/webapps/projeto/WEB-INF/classes/application.properties
+
+rodar o tomcat 
+./startup.sh
+
+Rodou e gerou um log (tomcat/logs)
+
+$ tail -f catalina.out
+
+O tomcat conhece a aplicação pelo contexto
+localhost:8080/starweb/mapa/new
+
+
+Mas dá problema dos recursos estáticos
+
+Os links devem ter th:href="@{...}" no LayoutPadrao.html
+
+Os links devem mudar de
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+para
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+
+<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+
+Links
+th:href="@{/titulos/novo}"
+
+Form action
+th:action="@{/titulos}"

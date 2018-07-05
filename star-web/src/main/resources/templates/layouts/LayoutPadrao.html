@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	
+	<!-- <link rel="stylesheet" type="text/css" th:href="@{/css/complemento.css}"/> -->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker.standalone.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/new.css}"/>
+
+	<link rel='stylesheet' th:href="@{/js/fullcalendar/fullcalendar.min.css}" />
+	<script th:src="@{/js/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/js/vendor/moment.min.js}"></script>
+	<script th:src="@{/js/vendor/chart.min.js}"></script>
+	<script th:src='@{/js/fullcalendar/fullcalendar.js}'></script>	
+	<script th:src='@{/js/fullcalendar/locale/pt-br.js}'></script>
+	<title>Tenda do Visitante</title>
+</head>
+<body>
+	<section layout:include="layouts/Cabecalho"></section>
+
+	<div class="container-fluid">
+      	<h2 class="page-header" style="text-transform: uppercase;"><section layout:fragment="titulo"></section></h2>
+		<section layout:fragment="conteudo">
+			<p>Conteúdo Principal</p>
+		</section>
+	</div>
+	
+	<script th:src="@{/js/vendor/bootstrap.min.js}"></script>
+	<script th:src="@{/js/vendor/bootstrap-datepicker.min.js}"></script>
+	<script th:src="@{/js/vendor/bootstrap-datepicker.pt-BR.min.js}"></script>
+	<script th:src="@{/js/vendor/jquery.maskMoney.min.js}"></script>
+	<script th:src="@{/js/vendor/jquery.maskedinput.js}"></script>
+</body>
+</html>

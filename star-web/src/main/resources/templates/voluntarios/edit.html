@@ -1,0 +1,234 @@
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorator="layouts/LayoutPadrao">
+
+<head>
+	<title>Voluntário</title>
+</head>
+
+<section layout:fragment="titulo">Voluntário</section>
+
+<section layout:fragment="conteudo">
+
+	<form method="POST" th:action="@{/voluntarios}" th:object="${model}">
+
+		<div layout:include="layouts/MensagemGeral"></div>
+		<div layout:include="layouts/MensagemErro"></div>
+
+		<input type="hidden" th:field="*{id}"></input>
+		<input type="hidden" th:field="*{endereco.id}"></input>
+
+		<ul class="nav nav-tabs" role="tablist">
+			<li class="active"><a href="#menu-pessoais" role="tab" data-toggle="tab">Informações Pessoais</a></li>
+			<li><a href="#menu-endereco" role="tab" data-toggle="tab">Endereço</a></li>
+		</ul>
+
+		<div class="panel-body">
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="menu-pessoais">
+	
+					<div class="row">
+						<div class="form-group col-md-8" th:classappend="${#fields.hasErrors('nome')} ? has-error">
+							<label for="nome">Nome:</label>
+							<input type="text" class="form-control" id="pessoa_nome" name="pessoa_nome" th:field="*{nome}"></input>
+						</div>
+
+						<div class="form-group col-md-4" th:classappend="${#fields.hasErrors('funcaoLideranca')} ? has-error">
+							<label for="faixa_etaria">Função:</label>
+							<select class="form-control" id="funcao_lideranca" name="funcao_lideranca" th:field="*{funcaoLideranca.id}">
+								<option th:each="i : ${listaFuncoes}" th:value="${i.id}"
+									th:text="${i.descricao}"></option>
+							</select>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-md-4" th:classappend="${#fields.hasErrors('faixaEtaria')} ? has-error">
+							<label for="faixa_etaria">Faixa Etária:</label>
+							<select class="form-control" id="faixa_etaria" name="faixa_etaria" th:field="*{faixaEtaria.id}">
+								<option th:each="i : ${listaFaixasEtarias}" th:value="${i.id}"
+									th:text="${i.descricao}"></option>
+							</select>
+						</div>
+
+						<div class="form-group col-md-4">
+							<label for="endereco_cidade">Sexo:</label>
+							<select class="form-control" id="sexo" name="sexo" th:field="*{sexo}">
+								<option th:each="sexo : ${todosSexo}" th:value="${sexo}"
+									th:text="${sexo.descricao}"></option>
+							</select>
+						</div>
+						<div class="form-group col-md-4">
+							<label for="endereco_cidade">Estado Civil:</label>
+							<select class="form-control" id="estadoCivil" name="estadoCivil" th:field="*{estadoCivil}">
+								<option th:each="estadoCivil : ${todosEstadoCivil}" th:value="${estadoCivil}" th:text="${estadoCivil.descricao}"></option>
+							</select>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-md-4" th:classappend="${#fields.hasErrors('email')} ? has-error">
+							<label for="pessoa_email">Email:</label>
+							<input type="text" class="form-control" id="pessoa_email" name="pessoa_email" th:field="*{email}"></input>
+						</div>
+						<div class="form-group col-md-4" th:classappend="${#fields.hasErrors('telefone1')} ? has-error">
+							<label for="pessoa_telefone1">Telefone 1:</label>
+							<input type="text" class="form-control" id="pessoa_telefone1" name="pessoa_telefone1" th:field="*{telefone1}"></input>
+						</div>
+						<div class="form-group col-md-4" th:classappend="${#fields.hasErrors('telefone2')} ? has-error">
+							<label for="pessoa_telefone2">Telefone 2:</label>
+							<input type="text" class="form-control" id="pessoa_telefone2" name="pessoa_telefone2" th:field="*{telefone2}"></input>
+						</div>
+					</div>
+
+				</div>
+
+				<div role="tabpanel" class="tab-pane" id="menu-endereco">
+
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="endereco_logradouro">Endereço:</label>
+							<input type="text" class="form-control" id="endereco_logradouro" name="endereco_logradouro" th:field="*{endereco.logradouro}"></input>
+						</div>
+
+						<div class="form-group col-md-2">
+							<label for="endereco_numero">Número:</label>
+							<input type="text" class="form-control" id="endereco_numero" name="endereco_numero" th:field="*{endereco.numero}"></input>
+						</div>
+
+						<div class="form-group col-md-4">
+							<label for="endereco_complemento">Complemento:</label>
+							<input type="text" class="form-control" id="endereco_complemento" name="endereco_complemento" th:field="*{endereco.complemento}"></input>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-md-4">
+							<label for="endereco_bairro">Bairro:</label>
+							<input type="text" class="form-control" id="endereco_bairro" name="endereco_bairro" th:field="*{endereco.bairro}"></input>
+						</div>
+
+						<div class="form-group col-md-2">
+							<label for="endereco_cep">CEP:</label>
+							<input type="text" class="form-control" id="endereco_cep" name="endereco_cep" th:field="*{endereco.cep}"></input>
+						</div>
+
+						<div class="form-group col-md-4">
+							<label for="endereco_cidade">Cidade</label>
+							<input type="text" class="form-control" id="endereco_cidade" name="endereco_cidade" th:field="*{endereco.cidade}"></input>
+						</div>
+
+						<div class="form-group col-md-2">
+							<label for="endereco_cidade">UF:</label>
+							<select class="form-control" id="uf" name="uf" th:field="*{endereco.uf}">
+								<option th:each="uf : ${todosUF}" th:value="${uf}" th:text="${uf.descricao}"></option>
+							</select>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="endereco_latitude">Latitude:</label>
+							<input type="text" class="form-control" id="endereco_latitude" name="endereco_latitude" th:field="*{endereco.latitude}" readonly="readonly"></input>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="endereco_longitude">Longitude:</label>
+							<input type="text" class="form-control" id="endereco_longitude" name="endereco_longitude" th:field="*{endereco.longitude}" readonly="readonly"></input>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<button type="submit" class="btn btn-primary">Gravar</button>
+				<a class="btn btn-default" role="button" th:href="@{/voluntarios}">Voltar</a>
+			</div>
+		</div>
+
+	</form>
+
+
+	<script>
+		function configuraDisplay() {
+			if ($("#filhosMenores").val() == "true") {
+				$(".div-filhos-menores").show();
+			} else {
+				$(".div-filhos-menores").hide();
+				$("#idadeFilho1").val("");
+				$("#idadeFilho2").val("");
+				$("#idadeFilho3").val("");
+			}
+
+			if ($("#possuiAcompanhante").val() == "true") {
+				$(".acompanhante").show();
+			} else {
+				$(".acompanhante").hide();
+				$("#nomeAcompanhante").val("");
+			}
+		}
+
+		function configuraDisplayPg() {
+			if ($("#interessadoPg").val() == "true") {
+				$(".detalhes-pg").show();
+			} else {
+				$(".detalhes-pg").hide();
+				$("#disponivelDomingo").val("false");
+				$("#disponivelSegunda").val("false");
+				$("#disponivelTerca").val("false");
+				$("#disponivelQuarta").val("false");
+				$("#disponivelQuinta").val("false");
+				$("#disponivelSexta").val("false");
+				$("#disponivelSabado").val("false");
+
+				$("#filhosMenores").val("false");
+				$("#filhosMenores").change();
+
+				$("#possuiAcompanhante").val("false")
+				$("#possuiAcompanhante").change();
+			}
+		}
+
+		$(function () {
+
+			configuraDisplay();
+			configuraDisplayPg();
+
+			$(".nav-pills a").click(function () {
+				$(this).tab('show');
+			});
+
+			var rowCount = $("#horarios tr").length;
+
+			$("#pessoa_nome").focus();
+			$(".formatoData").mask("99/99/9999");
+			//$("#cpf").mask("999.999.999-99");
+			$("#endereco_cep").mask("99999-999");
+			//$(".fmthora").mask("99:99");
+			//$(".horarioid").attr("name","horarios[].id");
+			//$(".fmthora").attr("name","horarios[].horario");
+
+			//$(".horarioid").removeAttr("id");
+			//$(".fmthora:text").removeAttr("id");
+			// https://v4-alpha.getbootstrap.com/components/navs/#fade-effect
+
+			$("#interessadoPg").change(function () {
+				configuraDisplayPg();
+			});
+
+			$("#possuiAcompanhante").change(function () {
+				configuraDisplay();
+			});
+
+			$("#filhosMenores").change(function () {
+				configuraDisplay();
+			});
+
+		});
+	</script>
+
+</section>
+
+</html>

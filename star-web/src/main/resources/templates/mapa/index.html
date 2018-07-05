@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="layouts/LayoutPadrao">
+<head>
+	<title>Mapa</title>
+</head>
+
+<section layout:fragment="titulo">Resultado</section>
+
+<section layout:fragment="conteudo">
+	<div layout:include="layouts/MensagemGeral"></div>
+	<div class="row">	
+		<div class="col-md-12">
+			<a class="btn btn-success pull-left" th:href="@{/mapa/new}">Nova Consulta</a>
+		</div>
+	</div>
+	<div class="row" th:if="${session != null}">	
+		<div class="col-md-12">
+			<h3>
+		 		<span th:text="${session.model.nome}" >Itamar Rocha Chaves Junior</span> -
+		 		<span th:text="${{session.model.dataNascimento}}" >29/06/1972</span>
+		 		<span th:text="${session.model.horaNascimento}" >05:00</span>
+		 	</h3>
+		 	<h4>
+		 		<span th:text="${session.model.cidade}" >Caxias</span> - <span th:text="${session.model.uf}" >MA</span>
+		 	</h4>
+		 	<img th:src="@{/images/mapa.png}" />
+		 	<img th:src="@{/images/aspectos.png}" />
+		</div>
+	 	
+	</div>
+	<div class="row col-md-12" th:each="item: ${session.lista}" >
+		<p style="font-size:16pt; font-weight:500; margin-top:1.5em;" th:text="${item.titulo}">Título</p>
+		<p th:each="par: ${item.textos}" align="justify" style="text-indent:2em; font-size:12pt; margin-bottom:0.8em;" th:text="${par}">Texto</p>
+	</div>
+	
+</section>
+
+</html>

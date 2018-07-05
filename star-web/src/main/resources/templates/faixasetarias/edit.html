@@ -1,0 +1,44 @@
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorator="layouts/LayoutPadrao">
+
+<head>
+	<title>Faixa Etária</title>
+</head>
+
+<section layout:fragment="titulo">Faixa Etária</section>
+
+<section layout:fragment="conteudo">
+
+	<form method="POST" th:action="@{/faixasetarias}" th:object="${model}">
+		<div layout:include="layouts/MensagemErro"></div>
+		<div layout:include="layouts/MensagemGeral"></div>
+
+		<input type="hidden" th:field="*{id}"></input>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="descricao">Descrição:</label>
+				<input type="text" class="form-control" id="descricao" name="descricao" th:field="*{descricao}"></input>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<button type="submit" class="btn btn-primary">Salvar</button>
+				<a class="btn btn-default" role="button" th:href="@{/faixasetarias}">Voltar</a>
+			</div>
+		</div>
+	</form>
+
+	<script>
+		$(function () {
+			$("#descricao").focus();
+		});
+
+	</script>
+
+</section>
+
+</html>

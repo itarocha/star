@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="layouts/LayoutPadrao">
+<head>
+	<title>Agenda</title>
+</head>
+
+<section layout:fragment="titulo">Agenda</section>
+
+<section layout:fragment="conteudo">
+	<div class="row">
+		<div id="div-calendario" class="col-md-8">
+			<div id="calendar"></div>
+	    </div>
+		<div class="col-md-4">
+			<div id="texto-consulta-selecionada">
+				<h5>Clique sobre uma consulta para exibir painel de opções...</h5>
+			</div>
+			<div id="consulta-selecionada" class="invisible">
+				<div id="painel-detalhes" class="panel panel-default">
+	  				<div id="painel-detalhes-header" class="panel-heading">Consulta Selecionada</div>
+	  				<div id="painel-detalhes-body" class="panel-body"></div>
+				</div>
+			</div>
+	    </div>
+    </div>
+
+<!-- Modal -->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title">Confirmation</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Selecione uma ação para um dos cultos que você escolher ou clique no botão Cancelar</p>
+
+					<div class="table-responsive">
+						<table id="tabelaCultos" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Culto</th>
+									<th>Ação</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>#</td>
+									<td><h5>08:00</h5></td>
+									<td>
+										<button type="button" class="btn btn-warning btn-sm">Abrir</button>
+										<button type="button" class="btn btn-success btn-sm">Criar</button>
+										<button type="button" class="btn btn-primary btn-sm">Presença</button>
+										<button type="button" class="btn btn-info btn-sm">Estatísticas</button>
+										<button type="button" class="btn btn-danger btn-sm">Fechar</button>
+										<button type="button" class="btn btn-danger btn-sm">Reabrir</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>		
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    		
+	<script>
+	$(function(){
+		
+		$('#calendar').fullCalendar({
+			//eventColor: "#17b5ff",
+			eventTextColor: "#000",
+			//backgroundColor: "yellow",
+			//backgroundColor: "#ccffcc",
+		
+			dayRender: function (date, cell) {
+				today = new Date();
+				if (date === today.getDate()) {
+					cell.css("background-color", "red");	
+				}
+				
+	    	},
+			
+		    dayClick: function(date, jsEvent, view) {
+		    	 $.ajax({
+		             url: 'api/eventos_por_dia',
+		             data: {
+		                 dia: date.format()
+		             },
+		             success: function(doc) {
+		                 var xevents = [];
+		                 if (doc.length == 0){
+		                	 alert("Não há cultos previstos para esse dia");
+		                 } else {
+			 		        $(".modal-title").text(date.format("DD/MM/YYYY"));
+			 		        $("#tabelaCultos").find("tr:gt(0)").remove();
+			 		        var botoes = "";
+		                	 
+			                 $(doc).each(function(i, data) {
+
+			                	 if (data.id == 0) {
+				 		        	botoes = '<button type="button" class="btn btn-success btn-sm" >Criar e Abrir</button> '; 
+				 		        } else {
+				 		        	botoes = '<a role="button" class="btn btn-primary btn-sm bt-selecionar" data-acao="presenca" href="#" data-id="'+data.id+'">Presença</a> '+
+				 		        	         '<a role="button" class="btn btn-warning btn-sm bt-selecionar" data-acao="detalhes" href="#" data-id="'+data.id+'">Detalhes</a> '+
+									         '<a role="button" class="btn btn-info btn-sm bt-selecionar" data-acao="estatisticas" href="#" data-id="'+data.id+'">Estatísticas</a> ';
+									      
+									if (data.fechado){
+										botoes = botoes + '<button type="button" class="btn btn-danger btn-sm">Reabrir</button> ';	
+									} else {
+										botoes = botoes + '<button type="button" class="btn btn-danger btn-sm">Encerrar Culto</button> ';
+									}         
+				 		        }
+
+					 		    $("#tabelaCultos > tbody:last-child").append("<tr><td>"+data.id+"</td><td>"+ data.title+"</td><td>"+botoes+"</td></tr>");
+			                	 xevents.push({
+			                         id: data.id,
+			                         title: data.title,
+			                         start: data.start // will be parsed
+			                     });
+			                 });
+		                	 
+			                $(".bt-selecionar").bind("click", go); 
+					        $("#myModal").modal('show');
+		                 }
+					
+	                 //$('#calendar').fullCalendar( 'removeEvents' ); // Funciona: remove todos os eventos
+	                 //$('#calendar').fullCalendar( 'updateEvents', xevents );
+	                 
+	                 //callback(events);
+	             }
+	         });	    	 
+
+		    },
+		    
+		    eventClick: function(calEvent){
+		    	console.log("eventClick "+JSON.stringify(calEvent));
+		    	
+		    	$("#consulta-selecionada").removeClass("invisible");
+		    	$("#texto-consulta-selecionada").addClass("invisible");
+		    	
+		    	$("#div-calendario").removeClass("col-md-12").addClass("col-md-8");
+		    	
+		    	
+		    	var start = calEvent.start;
+		    	
+		    	var status = calEvent.completed ? "Consulta realizada" : "Consulta pendente";
+		    	var botaoConsulta = '<a role="button" class="btn btn-primary btn-sm bt-selecionar" href="consultas/edit/'+calEvent.id+'">Abrir Consulta</a> ';
+		    	var botaoCliente = '<a role="button" class="btn btn-success btn-sm bt-selecionar" href="clientes/edit/'+calEvent.clienteId+'">Editar Cliente</a> ';
+		    	var botaoConsultasCliente = '<a role="button" class="btn btn-info btn-sm bt-selecionar" href="clientes/consultas/'+calEvent.clienteId+'">Ver Consultas</a>';
+		    	
+		    	$("#painel-detalhes-header").html($("<h4></h4>").text(calEvent.nome));
+		    	$("#painel-detalhes-body").html( $("<p></p>").text("Telefone: "+calEvent.telefone));
+		    	$("#painel-detalhes-body").append( $("<p></p>").text("Data: "+start.format("DD/MM/YYYY")));
+		    	$("#painel-detalhes-body").append( $("<p></p>").text(status));
+		    	$("#painel-detalhes-body").append( $("<p></p>").html(botaoConsulta).append(botaoCliente).append(botaoConsultasCliente));
+		    	
+		       selecionarDia(calEvent.id,"presenca");
+		    },
+		    
+		    events: {
+				url: 'api/eventos',
+				error: function() {
+					$('#script-warning').show();
+				}
+			},		    
+		
+		});
+		$(".fc-today").css("background-color","#ffff00");
+		// http://www.whatibroke.com/2013/01/01/change-current-day-color-jquery-fullcalendar/
+	});	
+	
+	// Ao clicar em um evento
+	function selecionarDia(id, acao){
+		 $.ajax({
+             url: 'api/selecionar',
+             data: {
+                 id: id//calEvent.id,
+                 //dia: data, //calEvent.start.format(),
+                 //hora: titulo//calEvent.title,
+             },
+             success: function(doc) {
+            	 //$("#data_selecionada_id").hide().html(doc.id).fadeIn('fast');
+            	 //$("#data_selecionada_data_culto").hide().html(doc.dataCulto).fadeIn('fast');
+            	 //$("#data_selecionada_horario").hide().html(doc.horario).fadeIn('fast');
+            	 if (acao == "presenca") {
+            		 window.location.replace("sys/kids");	 
+            	 } else
+                 if (acao == "detalhes") {
+                 	window.location.replace("sys/kids");	 
+                 } else
+                 if (acao == "estatisticas") {
+                 	window.location.replace("sys/kids");	 
+                 }
+            	 
+         	 }
+     	});		
+	}
+	
+	function go(event){
+		//var bt = $(event.relatedTarget);
+		var id = $(this).data('id');
+		var acao = $(this).data('acao');
+		//alert('O id deste botão é '+id);
+		//window.location.replace("/sys/kids");
+		selecionarDia(id, acao);
+	} 
+	
+	</script>
+</section>
+
+</html>

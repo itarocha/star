@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="layouts/LayoutPadrao">
+<head>
+	<title>Mapa</title>
+</head>
+
+<section layout:fragment="titulo">Resultado</section>
+
+<section layout:fragment="conteudo">
+	<div layout:include="layouts/MensagemGeral"></div>
+	
+	<a class="btn btn-success pull-left" th:href="@{/mapa/new}">Novo Mapa</a>
+	
+	<div class="table-responsive">
+
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th class="text-center com-md-1">#</th>
+					<th>Nome</th>
+					<th>Telefone</th>
+					<th>Email</th>
+					<th class="text-center col-md-2">Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item: ${lista.content}">
+					<td class="text-center com-md-1" th:text="${item.id}">#</td>
+					<td th:text="${item.nome}"></td>
+					<td th:text="${item.telefone}"></td>
+					<td th:text="${item.email}"></td>							
+					<td class="text-center">
+						<a class="btn btn-link btn-xs" th:href="@{/clientes/edit/{id}(id=${item.id})}"
+							title="Editar" rel="tooltip" data-placement="top">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</a>
+						<a class="btn btn-link btn-xs btnInclusaoConsultaModal" data-toggle="modal"  
+							th:attr="data-codigo=${item.id}, data-descricao=${item.nome}"
+							title="Agendar" rel="tooltip" data-placement="top">
+							<span class="glyphicon glyphicon-time"></span>
+						</a>
+						<a class="btn btn-link btn-xs" th:href="@{/clientes/consultas/{id}(id=${item.id})}"
+							title="Ver Consultas" rel="tooltip" data-placement="top">
+							<span class="glyphicon glyphicon-heart"></span>
+						</a>
+						<a class="btn btn-link btn-xs" data-toggle="modal" data-target="#confirmacaoExclusaoModal"
+							th:attr="data-codigo=${item.id}, data-descricao=${item.nome}"
+							title="Excluir" rel="tooltip" data-placement="top">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" th:if="${#lists.isEmpty(lista.content)}">Sem informações para apresentar</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div th:replace="layouts/fragments/Paginacao::layout-pagination"></div>
+	<div th:replace="layouts/fragments/paginaAcoesConsulta::novo"></div>
+
+</section>
+
+</html>

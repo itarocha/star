@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ layout:decorator="layouts/LayoutPadrao">
+
+<head>
+	<title>Signo Solar</title>
+</head>
+
+<section layout:fragment="titulo">Signo Solar</section>
+
+<section layout:fragment="conteudo">
+
+	<form method="POST" th:action="@{/solares}" th:object="${model}">
+		<div layout:include="layouts/MensagemErro"></div>
+		<div layout:include="layouts/MensagemGeral"></div>
+
+		<input type="hidden" th:field="*{id}"></input>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="horario">Descrição:</label>
+				<input type="text" class="form-control" id="descricao" name="descricao" th:field="*{descricao}"></input>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="dia">Signo:</label>
+				<select class="form-control" id="signo" name="signo" th:field="*{signo}">
+					<option th:each="s : ${listaSignos}" th:value="${s}" th:text="${s.descricao}"></option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-12">
+				<label for="texto">Texto:</label>
+				<textarea class="form-control" rows="10" id="texto" name="texto" th:field="*{texto}"></textarea>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-2">
+				<label for="conferido">Conferido?</label>
+				<select class="form-control" id="conferido" name="conferido" th:field="*{conferido}">
+					<option th:each="obj : ${listaLogico}" th:value="${obj}" th:text="${obj.descricao}"></option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<button type="submit" class="btn btn-primary">Salvar</button>
+				<a class="btn btn-default" role="button" th:href="@{/solares}">Voltar</a>
+			</div>
+		</div>
+	</form>
+
+	<script>
+		$(function () {
+			$("#descricao").focus();
+		});
+	</script>
+
+</section>
+
+</html>

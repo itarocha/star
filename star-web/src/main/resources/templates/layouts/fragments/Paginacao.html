@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<div th:fragment="layout-pagination">
+	
+    <ul th:if="${lista.totalPages &gt; 0}" class="pagination">
+      <li th:class="${lista.first}? 'disabled' : ''">
+        <span th:if='${lista.first}'>← Primeira</span>
+        <a th:if='${not lista.first}' th:href='@{${lista.url}(page=0,size=${lista.size})}'>← Primeira</a>
+      </li>
+
+      <li th:class="${lista.number &gt; 0}? '' : 'disabled'">
+        <span th:if="${not (lista.number &gt; 0)}">«</span>
+        <a th:if="${lista.number &gt; 0}" th:href='@{${lista.url}(page=${lista.number-1},size=${lista.size})}' title='Página anterior'>«</a>
+      </li>
+      
+      <li th:each="i : ${#numbers.sequence(1,lista.totalPages)}"  th:class="${i == lista.number}? 'active' : ''">
+        <span th:if='${i == lista.number}' th:text='${i}'>1</span>
+        <a th:if='${i != lista.number}' th:href='@{${lista.url}(page=${i-1},size=${lista.size})}'><span th:text='${i}'>1</span></a>
+      </li>
+
+
+      <li th:class="${lista.number+1 &lt; lista.totalPages }? '' : 'disabled'">
+        <span th:if="${not (lista.number+1 &lt; lista.totalPages)}">»</span>
+        <a th:if="${lista.number+1 &lt; lista.totalPages}" th:href="@{${lista.url}(page=${lista.number},size=${lista.size})}" title='Próxima página'>»</a>
+      </li>
+      
+      <li th:class="${lista.last}? 'disabled' : ''">
+        <span th:if='${lista.last}'>Última →</span>
+        <a th:if='${not lista.last}' th:href='@{${lista.url}(page=${lista.totalPages-1},size=${lista.size})}'>Última →</a>
+      </li>
+    </ul>
+</div>  
+
+</html>

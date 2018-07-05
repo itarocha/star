@@ -1,0 +1,126 @@
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorator="layouts/LayoutPadrao">
+
+<head>
+	<title>Pequeno Grupo</title>
+</head>
+
+<section layout:fragment="titulo">Pequeno Grupo</section>
+
+<section layout:fragment="conteudo">
+
+	<form method="POST" th:action="@{/pequenosgrupos}" th:object="${pequenogrupo}">
+
+		<div layout:include="layouts/MensagemGeral"></div>
+
+		<input type="hidden" th:field="*{id}"></input>
+		<input type="hidden" th:field="*{endereco.id}"></input>
+
+		<div class="row">
+			<div class="form-group col-md-2" th:classappend="${#fields.hasErrors('perfil')} ? has-error">
+				<label for="nome">Perfil:</label>
+				<select class="form-control" id="perfil" name="perfil" th:field="*{perfil.id}">
+					<option th:each="i : ${listaPerfis}" th:value="${i.id}" th:text="${i.descricao}"></option>
+				</select>
+			</div>
+
+			<div class="form-group col-md-2" th:classappend="${#fields.hasErrors('diaSemana')} ? has-error">
+				<label for="nome">Dia da Semana:</label>
+				<select class="form-control" id="diaSemana" name="diaSemana" th:field="*{diaSemana.id}">
+					<option th:each="d : ${listaDias}" th:value="${d.id}" th:text="${d.descricao}"></option>
+				</select>
+			</div>
+
+			<div class="form-group col-md-2">
+				<label for="horario">Horário:</label>
+				<input type="text" class="form-control" id="horario" name="horario" th:field="*{horario}"></input>
+			</div>
+
+			<div class="form-group col-md-6" th:classappend="${#fields.hasErrors('responsavel')} ? has-error">
+				<label for="nome">Responsável:</label>
+				<select class="form-control" id="responsavel" name="responsavel" th:field="*{responsavel.id}">
+					<option th:each="v : ${todosVoluntarios}" th:value="${v.id}" th:text="${v.nome}"></option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="endereco_logradouro">Endereço:</label>
+				<input type="text" class="form-control" id="endereco_logradouro" name="endereco_logradouro" th:field="*{endereco.logradouro}"></input>
+			</div>
+
+			<div class="form-group col-md-2">
+				<label for="endereco_numero">Número:</label>
+				<input type="text" class="form-control" id="endereco_numero" name="endereco_numero" th:field="*{endereco.numero}"></input>
+			</div>
+
+			<div class="form-group col-md-4">
+				<label for="endereco_complemento">Complemento:</label>
+				<input type="text" class="form-control" id="endereco_complemento" name="endereco_complemento" th:field="*{endereco.complemento}"></input>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-4">
+				<label for="endereco_bairro">Bairro:</label>
+				<input type="text" class="form-control" id="endereco_bairro" name="endereco_bairro" th:field="*{endereco.bairro}"></input>
+			</div>
+
+			<div class="form-group col-md-2">
+				<label for="endereco_cep">CEP:</label>
+				<input type="text" class="form-control" id="endereco_cep" name="endereco_cep" th:field="*{endereco.cep}"></input>
+			</div>
+
+			<div class="form-group col-md-4">
+				<label for="endereco_cidade">Cidade</label>
+				<input type="text" class="form-control" id="endereco_cidade" name="endereco_cidade" th:field="*{endereco.cidade}"></input>
+			</div>
+
+			<div class="form-group col-md-2">
+				<label for="endereco_cidade">UF:</label>
+				<select class="form-control" id="uf" name="uf" th:field="*{endereco.uf}">
+					<option th:each="uf : ${todosUF}" th:value="${uf}" th:text="${uf.descricao}"></option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="endereco_latitude">Latitude:</label>
+				<input type="text" class="form-control" id="endereco_latitude" name="endereco_latitude" th:field="*{endereco.latitude}" readonly="readonly"></input>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="endereco_longitude">Longitude:</label>
+				<input type="text" class="form-control" id="endereco_longitude" name="endereco_longitude" th:field="*{endereco.longitude}" readonly="readonly"></input>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<button type="submit" class="btn btn-primary">Salvar</button>
+				<a class="btn btn-default" role="button" th:href="@{/pequenosgrupos}">Voltar</a>
+			</div>
+		</div>
+	</form>
+
+	<script>
+		$(function () {
+			var rowCount = $("#horarios tr").length;
+			$("#igreja").focus();
+			$("#dataNascimento").mask("99/99/9999");
+			//$("#cpf").mask("999.999.999-99");
+			$("#endereco_cep").mask("99999-999");
+			$(".fmthora").mask("99:99");
+			//$(".horarioid").attr("name","horarios[].id");
+			//$(".fmthora").attr("name","horarios[].horario");
+			//$(".horarioid").removeAttr("id");
+			//$(".fmthora:text").removeAttr("id");
+		});
+	</script>
+
+</section>
+
+</html>

@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="layouts/LayoutPadrao">
+<head>
+	<title>Login</title>
+</head>
+
+<section layout:fragment="conteudo">
+		
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+			
+            <div class="panel panel-default">
+                <div class="panel-heading">Esqueceu e senha</div>
+                <div class="panel-body">
+                
+					<form autocomplete="off" action="#" th:action="@{/esqueceu-a-senha}" th:object="${model}" method="post" role="form">
+	                	<div class="alert alert-danger" th:if="${#fields.hasErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<span th:text="${erro.message}"></span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-md-12" th:classappend="${#fields.hasErrors('email')} ? has-error">
+							    <label for="email" class="input-label f-left">Email:</label>
+						        <input type="text" class="form-control" id="email" name="email" th:field="*{email}"></input>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-md-12">
+							<button type="submit" class="btn btn-primary">Criar Nova Senha</button>
+							<a class="btn btn-default" role="button" th:href="@{/login}">Ir para form de Login</a>
+							</div>
+					     </div>
+    				
+    					<span th:utext="${successMessage}"></span>
+    				</form>            
+                
+                </div>
+             </div>
+         </div>       
+         
+      </div>   
+<script>
+
+$(function () {
+	$("#email").focus();
+});
+</script>
+      
+	
+</section>
+
+</html>

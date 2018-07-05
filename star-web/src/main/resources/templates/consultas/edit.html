@@ -1,0 +1,170 @@
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		layout:decorator="layouts/LayoutPadrao">
+
+<head>
+	<title>Consulta</title>
+</head>
+
+<section layout:fragment="titulo">Consulta</section>
+
+<section layout:fragment="conteudo">
+
+
+	<form method="POST" th:action="@{/consultas}" th:object="${model}">
+		<div class="row">
+			<div class="form-group col-md-4">
+				<label for="endereco_latitude">Nome:</label>
+				<h4 th:text="*{cliente.nome}"></h4>
+			</div>
+			<div class="form-group col-md-1">
+				<label for="endereco_longitude">Nascimento:</label>
+				<h5 th:text="*{{cliente.dataNascimento}}"></h5>
+			</div>
+			<div class="form-group col-md-1">
+				<label for="endereco_longitude">Idade:</label>
+				<h5 th:text="*{{cliente.idade}}"></h5>
+			</div>
+			<div class="form-group col-md-1">
+				<label>Altura (m):</label>
+				<h5 th:text="${{model.cliente.alturaMetros}}"></h5>
+			</div>
+			<div class="form-group col-md-1">
+				<label for="endereco_longitude">Sexo:</label>
+				<h5 th:text="*{cliente.sexo}"></h5>
+			</div>
+			<div class="form-group col-md-2">
+				<label for="endereco_longitude">Data Agenda:</label>
+				<h5 th:text="${{model.dataAgenda}}"></h5>
+			</div>
+		</div>
+		<div class="row" th:if="${!#lists.isEmpty(model.outrasConsultas)}">
+			<div class="form-group col-md-12">
+				Outras Consultas: <button type="button" class="btn btn-primary btn-sm bt-modal-consulta-info" th:attr="data-id=${c.id}, data-agenda=${{c.dataAgenda}}" 
+							th:each="c : ${model.outrasConsultas}" th:text="${{c.dataAgenda}}">
+							</button>
+			</div>
+		</div>
+
+		<div layout:include="layouts/MensagemGeral"></div>
+		<div layout:include="layouts/MensagemErro"></div>
+
+		<input type="hidden" th:field="*{id}"></input>
+		<input type="hidden" th:field="*{cliente.id}"></input>
+		<input type="hidden" th:field="*{cliente.nome}"></input>
+		<input type="hidden" th:field="*{cliente.dataNascimento}"></input>
+		<input type="hidden" id="sexo" th:field="*{cliente.sexo}"></input>
+		<input type="hidden" id="idade" th:field="*{cliente.idade}"></input>
+		<input type="hidden" th:field="*{dataAgenda}"></input>
+		<input type="hidden" id="altura" th:field="*{cliente.alturaMetros}"></input>
+		<input type="hidden" th:field="*{cliente.altura}"></input>
+
+		<div class="row">
+			<div class="form-group col-md-4" th:classappend="${#fields.hasErrors('peso')} ? has-error">
+				<label for="peso">Peso (kg):</label>
+				<input type="text" class="form-control" id="peso" name="peso" th:field="*{peso}"></input>
+			</div>
+			<div class="form-group col-md-4" th:classappend="${#fields.hasErrors('cintura')} ? has-error">
+				<label for="cintura">Cintura (cm):</label>
+				<input type="text" class="form-control" id="cintura" name="cintura" th:field="*{cintura}"></input>
+			</div>
+			<div class="form-group col-md-4" th:classappend="${#fields.hasErrors('quadril')} ? has-error">
+				<label for="quadril">Quadril (cm):</label>
+				<input type="text" class="form-control" id="quadril" name="quadril" th:field="*{quadril}"></input>
+			</div>
+		</div>
+		<div class="row">	
+			<div class="form-group col-md-3" th:classappend="${#fields.hasErrors('indiceMassaCorporal')} ? has-error">
+				<label for="pctGorduraCorporal">IMC:</label>
+				<div class="input-group">
+					<input type="text" class="form-control" id="indiceMassaCorporal" name="indiceMassaCorporal" th:field="*{indiceMassaCorporal}"></input>
+				  	<div class="input-group-btn">
+				  		<button id="bt-indice-massa-corporal" type="button" class="btn btn-default" data-tabela="1" aria-label="Help">
+				    	<span class="glyphicon glyphicon-dashboard"></span>
+				    	</button>
+				  	</div>
+			  	</div>				
+			</div>
+			
+			<div class="form-group col-md-3" th:classappend="${#fields.hasErrors('pctGorduraCorporal')} ? has-error">
+				<label for="pctGorduraCorporal">% Gordura Corporal:</label>
+				<div class="input-group">
+					<input type="text" class="form-control" id="pctGorduraCorporal" name="pctGorduraCorporal" th:field="*{pctGorduraCorporal}"></input>
+				  	<div class="input-group-btn">
+				  		<button id="bt-pct-gordura-corporal" type="button" class="btn btn-default" data-tabela="2" aria-label="Help">
+				    	<span class="glyphicon glyphicon-dashboard"></span>
+				    	</button>
+				  	</div>
+			  	</div>				
+			</div>
+			
+			<div class="form-group col-md-3" th:classappend="${#fields.hasErrors('pctMuscular')} ? has-error">
+				<label for="pctMuscular">% Muscular:</label>
+				<div class="input-group">
+					<input type="text" class="form-control" id="pctMuscular" name="pctMuscular" th:field="*{pctMuscular}"></input>
+				  	<div class="input-group-btn">
+				  		<button id="bt-pct-muscular" type="button" class="btn btn-default" data-tabela="3" aria-label="Help">
+				    	<span class="glyphicon glyphicon-dashboard"></span>
+				    	</button>
+				  	</div>
+			  	</div>				
+			</div>
+			
+			<div class="form-group col-md-3" th:classappend="${#fields.hasErrors('pctGorduraVisceral')} ? has-error">
+				<label for="pctGorduraVisceral">% Gordura Visceral:</label>
+				<div class="input-group">
+					<input type="text" class="form-control" id="pctGorduraVisceral" name="pctGorduraVisceral" th:field="*{pctGorduraVisceral}"></input>
+				  	<div class="input-group-btn">
+				  		<button id="bt-pct-gordura-visceral" type="button" class="btn btn-medio" data-tabela="4" aria-label="Help">
+				    	<span class="glyphicon glyphicon-dashboard"></span>
+				    	</button>
+				  	</div>
+			  	</div>				
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="laudo">Laudo:</label>
+				<textarea class="form-control" rows="6" id="laudo" name="laudo" th:field="*{laudo}"></textarea>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="receituario">Receituário:</label>
+				<textarea class="form-control" rows="6" id="receituario" name="receituario" th:field="*{receituario}"></textarea>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-2" th:classappend="${#fields.hasErrors('realizada')} ? has-error">
+				<label for="realizada">Consulta Realizada?</label>
+				<select class="form-control" id="realizada" name="realizada" th:field="*{realizada}">
+					<option value="N">Não</option>
+					<option value="S">Sim</option>
+				</select>
+			</div>				
+			<div class="form-group col-md-4">
+				<label for="dataConsulta" th:classappend="${#fields.hasErrors('dataConsulta')} ? has-error">Data da Consulta:</label>
+				<input type="text" class="form-control formatoData" id="dataConsulta" name="dataConsulta" th:field="*{dataConsulta}"
+				 data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-language="pt-BR" data-date-autoclose="true" data-date-today-highlight="true"
+				 data-date-orientation="bottom"></input>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<button type="submit" class="btn btn-primary">Gravar</button>
+				<a class="btn btn-default" role="button" th:href="@{/clientes/consultas/{id}(id=${model.cliente.id})}">Voltar</a>
+			</div>
+		</div>
+
+	</form>
+	<div id="resultado"></div>	
+	
+	<div th:replace="layouts/fragments/paginaIndicesConsulta::show"></div>
+	<div th:replace="layouts/fragments/paginaResumoConsulta::show"></div>
+	
+	
+</section>
+
+</html>

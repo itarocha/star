@@ -1,0 +1,71 @@
+/*
+Baixo peso muito grave: #000066
+Baixo peso grave:#0052cc 
+Baixo: #33ccff
+Ideal: #00cc44
+Sobrepeso: #ffdb4d 
+Obesidade grau I: #ff8533
+Obesidade grau II: #ff471a
+Obesidade grau III: #cc0000
+*/
+
+.chart-container {
+  position: relative;
+  margin: auto;
+  /*height: 40vh;
+  width: 60vw;
+  //height: 100%;
+  */
+  width: 100%;
+}
+
+.fundo-verde {
+	background-color:#99ff66 !important;	
+}
+
+.fundo-branco {
+	background-color:#fff !important;	
+}
+
+/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=FFFF00 */
+/*verde*/
+.btn-baixo {
+    color: #fff;
+    background-color: #66ccff;
+    border-color: #00aaff;
+}
+
+/*verde*/
+.btn-normal {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+
+/*amarelo*/
+.btn-medio {
+    color: #000;
+    background-color: #ffff00;
+    border-color: #e6e600;
+}
+
+/*laranja*/
+.btn-alto {
+    color: #000;
+    background-color: #ffcc00;
+    border-color: #e6b800;
+}
+
+/*vermelho*/
+.btn-muito-alto {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+/*vermelho escuro*/
+.btn-extremo {
+    color: #fff;
+    background-color: #800000;
+    border-color: #4d0000;
+}

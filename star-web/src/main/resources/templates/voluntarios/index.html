@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="layouts/LayoutPadrao">
+<head>
+	<title>Voluntários</title>
+</head>
+
+<section layout:fragment="titulo">Voluntários</section>
+
+<section layout:fragment="conteudo">
+	<div layout:include="layouts/MensagemGeral"></div>
+	
+	<a class="btn btn-success pull-left" th:href="@{/voluntarios/new}">Incluir</a>
+	<form method="GET" class="form-horizontal" th:action="@{/voluntarios}" th:object="${filtro}">
+		<div class="form-group">
+			<div class="col-sm-4">
+				<div class="input-group">
+					<input class="form-control" placeholder="Entre com o nome" 
+						autofocus="autofocus" th:field="*{descricao}" ></input>
+					<span class="input-group-btn">
+						<button type="submit" class="btn btn-default">
+							<i class="glyphicon glyphicon-search"></i>
+						</button>
+					</span>
+				</div>
+			</div>
+		</div>
+	</form>
+	
+	<div class="table-responsive">
+
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th class="text-center com-md-1">#</th>
+					<th>Nome</th>
+					<th>Função</th>
+					<th>Telefone 1</th>
+					<th>Telefone 2</th>
+					<th>Email</th>
+					<th class="text-right col-md-1"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item: ${lista.content}">
+					<td class="text-center com-md-1" th:text="${item.id}">#</td>
+					<td th:text="${item.nome}"></td>
+					<td th:text="${item.funcaoLideranca.descricao}"></td>
+					<td th:text="${item.telefone1}"></td>
+					<td th:text="${item.telefone2}"></td>
+					<td th:text="${item.email}"></td>							
+					<td class="text-center">
+						<a class="btn btn-link btn-xs" th:href="@{/voluntarios/edit/{id}(id=${item.id})}"
+							title="Editar" rel="tooltip" data-placement="top">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</a>
+						<a class="btn btn-link btn-xs" data-toggle="modal" data-target="#confirmacaoExclusaoModal"
+							th:attr="data-codigo=${item.id}, data-descricao=${item.nome}"
+							title="Excluir" rel="tooltip" data-placement="top">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" th:if="${#lists.isEmpty(lista.content)}">Sem informações para apresentar</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div th:replace="layouts/fragments/Paginacao::layout-pagination"></div>
+
+	<div class="modal fade"	id="confirmacaoExclusaoModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog">
+		
+			<form th:attr="action=@{/funcoeslideranca/delete}" method="POST">
+				<input type="hidden" name="_method" value="DELETE"/>
+		
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Você tem certeza?</h4>
+					</div>
+					
+					<div class="modal-body">
+						<span>Tem certeza que deseja excluir?</span>
+					</div>
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						<button type="submit" class="btn btn-danger">Excluir</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>	
+	<script th:src="@{/js/exclusao.js}"></script>
+		
+</section>
+
+</html>

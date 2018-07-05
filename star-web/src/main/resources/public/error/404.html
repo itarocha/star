@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="layouts/LayoutPadrao">
+<head>
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404: Page Not Found</title>
+    <style>
+        body {  background-color: #2a2627;  margin:20px;}
+        h1, p { color: #ffffff; }
+    </style>
+</head>
+
+<body>
+    <h1>Page Not Found</h1>
+    <p th:text="${error}">Error Info</p>
+    <p class="col s12 center" th:text="${message}">
+        Página não disponível
+    </p>
+ </body>
+</html>

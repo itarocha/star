@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="layouts/LayoutPadrao">
+<head>
+	<title>Pequenos Grupos</title>
+</head>
+
+<section layout:fragment="titulo">Pequenos Grupos <a class="btn btn-success" th:href="@{/pequenosgrupos/new}">Novo</a></section>
+
+<section layout:fragment="conteudo">
+	<div layout:include="layouts/MensagemGeral"></div>
+	
+	<div style="margin-top:1em;"></div>
+	
+	<form id="frmPesquisarNew" method="GET" class="form-horizontal" th:action="@{/pequenosgrupos}" role="search">
+	  <div class="row linha-pesquisa" style="margin-top:1em;">
+		   <div class="col-md-1">
+		 		<button id="bt_pesquisar_new" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Pesquisar</button>
+		   </div>
+		   <div class="col-md-1">
+		 		<button id="bt-adicionar-new" class="btn btn-info adicionar-new"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar Linha de Pesquisa</button>
+		   </div>
+	  </div>
+	</form>
+	<div>&nbsp;</div>
+	
+	<div class="table-responsive">
+	
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th class="text-center com-md-1">#</th>
+					<th>Responsável</th>
+					<th>Telefone 1</th>
+					<th>Bairro</th>
+					<th>Perfil</th>
+					<th>Dia</th>
+					<th>Hora</th>
+					<th class="text-right col-md-1"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item: ${lista.content}">
+					<td class="text-center com-md-1" th:text="${item.id}">#</td>
+					<td th:text="${item.responsavel.nome}"></td>
+					<td th:text="${item.responsavel.telefone1}"></td>
+					<td th:text="${item.endereco.bairro}"></td>
+					<td th:text="${item.perfil.descricao}"></td>
+					<td th:text="${item.diaSemana.descricao}"></td>
+					<td th:text="${item.horario}"></td>
+					<td class="text-center">
+						<a class="btn btn-link btn-xs" th:href="@{/pequenosgrupos/edit/{id}(id=${item.id})}"
+							title="Editar" rel="tooltip" data-placement="top">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</a>
+						<a class="btn btn-link btn-xs" data-toggle="modal" data-target="#confirmacaoExclusaoModal"
+							th:attr="data-codigo=${item.id}, data-descricao=${item.responsavel.nome}"
+							title="Excluir" rel="tooltip" data-placement="top">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="8" th:if="${#lists.isEmpty(lista.content)}">Sem informações para apresentar</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div th:replace="layouts/fragments/Paginacao::layout-pagination"></div>
+	
+	<div class="modal fade"	id="confirmacaoExclusaoModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog">
+		
+			<form th:attr="action=@{/pequenosgrupos/delete}" method="POST">
+				<input type="hidden" name="_method" value="DELETE"/>
+		
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Você tem certeza?</h4>
+					</div>
+					
+					<div class="modal-body">
+						<span>Tem certeza que deseja excluir?</span>
+					</div>
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						<button type="submit" class="btn btn-danger">Excluir</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>	
+	<script th:src="@{/js/exclusao.js}"></script>
+	<script th:src="@{/js/pequenosgrupos.js}"></script>
+	<script th:inline="javascript">
+		var camposPesquisa = [[${camposPesquisa}]] ;
+		var query = [[${pesquisa}]] ;
+
+		$(function(){
+			configurarFiltros(camposPesquisa, query);
+		});
+	</script>
+
+
+</section>
+
+</html>

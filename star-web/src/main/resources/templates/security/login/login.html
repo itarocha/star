@@ -1,0 +1,67 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorator="layouts/LayoutPadrao">
+<head>
+	<title>Login</title>
+</head>
+
+<section layout:fragment="conteudo">
+		<div layout:include="layouts/MensagemGeral"></div>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+			
+            <div class="panel panel-default">
+                <div class="panel-heading">Login - Informe o usuário e senha</div>
+                <div class="panel-body">
+                
+    				<form method="POST" th:action="@{/login}">
+
+						<div class="row">
+							<div class="form-group col-md-4 col-md-offset-4">
+								<img th:src="@{/images/logo-petra-sistemas-180.png}" class="img-responsive center-block" width="300" height="300" alt="Logo"></img>
+							</div>
+						</div>
+
+						<div class="row" >
+							<div class="form-group col-md-12">
+							    <label for="email" class="input-label f-left">Email:</label>
+						        <input type="text" class="form-control" id="email" name="email"></input>
+							</div>
+						</div>
+			
+						<div class="row" >
+					     <div class="form-group col-md-12">
+					       <label for="password">Senha:</label>
+					       <input type="password" class="form-control" id="password" name="password"></input>
+					       <div align="center" th:if="${param.error}">
+								<p style="font-size: 20; color: #FF1C19;">Email or Senha inválida, por favor, verifique</p>
+							</div>
+					     </div>
+						</div>
+    				
+						<div class="row">
+							<div class="form-group col-md-12">
+							<button type="submit" class="btn btn-primary">Login</button>
+							<a class="btn btn-default" role="button" th:href="@{/esqueceu-a-senha}">Esqueceu a Senha</a>
+						</div>
+					   </div>
+    				
+    				</form>            
+                
+                </div>
+             </div>
+         </div>       
+         
+      </div>   
+<script>
+
+$(function () {
+	$("#email").focus();
+});
+</script>
+      
+	
+</section>
+
+</html>

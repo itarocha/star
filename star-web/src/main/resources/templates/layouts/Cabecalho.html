@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+    <nav class="navbar navbar-inverse navbar-static-top">
+    	<div class="container-fluid">
+        <div class="navbar-header" >
+        	<h2 style="color:#ffffff;margin-top:10px;">Mapa</h2>
+       </div>
+		
+			
+        <!--  <div class="navbar-collapse collapse" style="height: 1px;"> -->
+
+          <ul class="nav navbar-nav navbar-right">
+	          <li class="dropdown" sec:authorize="hasAuthority('ADMIN')">
+	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Menu <span class="caret"></span></a>
+	              <ul class="dropdown-menu" role="menu">
+	                <li sec:authorize="hasAnyAuthority('ADMIN', 'USER')"><a th:href="@{/mapa/new}">Mapa</a></li>
+	                <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/solares}">Signos Solares</a></li>
+	                <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/cuspides}">Cúspides</a></li>
+	                <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{planetacasa}">Planetas nas Casas</a></li>
+	                <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{planetasigno}">Planetas nos Signos</a></li>
+	                <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{aspectos}">Aspectos</a></li>
+	                <!--  
+	                <li sec:authorize="hasAuthority('ADMIN')"><a href="/funcoeslideranca">Funções de Liderança</a></li>
+	                <li sec:authorize="hasAuthority('ADMIN')"><a href="/faixasetarias">Faixas Etárias</a></li>
+	                <li sec:authorize="hasAuthority('ADMIN')"><a href="/perfispequenosgrupos">Perfis de Pequenos Grupos</a></li>
+	                <li sec:authorize="hasAuthority('ADMIN')"><a href="/voluntarios">Voluntários</a></li>
+	                <li sec:authorize="hasAuthority('ADMIN')"><a href="/pequenosgrupos">Pequenos Grupos</a></li>
+	                -->
+	              </ul>
+	          </li>
+              
+			</ul>
+        <!-- </div>-->
+        </div>
+	</nav>
+</html>
