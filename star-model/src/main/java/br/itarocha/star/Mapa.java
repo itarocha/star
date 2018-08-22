@@ -3,8 +3,11 @@ package br.itarocha.star;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import br.itarocha.star.model.Cidade;
@@ -12,14 +15,14 @@ import br.itarocha.star.model.Coordenada;
 import br.itarocha.star.model.Cuspide;
 import br.itarocha.star.model.ItemAspecto;
 import br.itarocha.star.model.PlanetaPosicao;
-import br.itarocha.star.model.TempoUniversal;
+//import br.itarocha.star.model.TempoUniversal;
 
 public class Mapa {
 	private String nome;
 	private String nomeCidade;
 	
 	private Calendar calendar;
-	private TempoUniversal tu;
+	private TempoUniversalLocal tu;
 	private Coordenada latitude;
 	private Coordenada longitude;
 	private int fuso;
@@ -33,18 +36,18 @@ public class Mapa {
 	private List<PlanetaPosicao> posicoesPlanetas = new ArrayList<PlanetaPosicao>();
 	
 	public Mapa(String nome, String data, String hora, Cidade cidade) {
-		this.nome = nome;
-		this.tu = new TempoUniversal(data, hora, cidade.getFuso());
-		
-		calendar = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 		try {
-			calendar.setTime(sdf.parse(data + " " + hora));
+			this.nome = nome;
+			this.tu = new TempoUniversalLocal(data + " " + hora, cidade.getFuso());
+			
+			calendar = Calendar.getInstance();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+				calendar.setTime(sdf.parse(data + " " + hora));
+			
+			make(nome, cidade.getFuso(), cidade.getLatitude(), cidade.getLongitude());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		make(nome, cidade.getFuso(), cidade.getLatitude(), cidade.getLongitude());
 	}
 	
 	private void make(String nome, int fuso, String lat, String lon){
@@ -115,22 +118,22 @@ public class Mapa {
 	}
 
 	public int getAnoUT(){
-		return tu.getAno();
+		return tu.getLocalDateTime().getYear();
 	}
 	
 	public int getMesUT(){
-		return tu.getMes();
+		return tu.getLocalDateTime().getMonthValue();
 	}
 	
 	public int getDiaUT(){
-		return tu.getDia();
+		return tu.getLocalDateTime().getDayOfMonth();
 	}
 	public int getMinutoUT(){
-		return tu.getMinuto();
+		return tu.getLocalDateTime().getMinute();
 	}
 	
 	public int getSegundoUT(){
-		return tu.getSegundo();
+		return tu.getLocalDateTime().getSecond();
 	}
 	
 	public double getHoraDouble(){
@@ -181,4 +184,28 @@ public class Mapa {
 		this.grausDefasagemAscendente = grausDefasagemAscendente;
 	}
 
+	private class TempoUniversalLocal {
+
+		private LocalDateTime localDateTime;
+
+		private double horaDouble;
+		
+		public TempoUniversalLocal(String sdatahora, int fuso) throws ParseException {
+			Date dateAqui = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(sdatahora);
+			this.localDateTime = dateAqui.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+			LocalDateTime ldtLondon = localDateTime.plusHours(fuso * -1);
+			int hora = ldtLondon.getHour();
+			int minuto = ldtLondon.getMinute();
+			int segundo = ldtLondon.getSecond();
+			this.horaDouble = hora + minuto / 60.0 + segundo / 3600.0;
+		}
+
+		public LocalDateTime getLocalDateTime() {
+			return this.localDateTime;
+		}
+
+		public double getHoraDouble() {
+			return this.horaDouble;
+		}
+	}	
 }
