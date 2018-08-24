@@ -15,7 +15,6 @@ import br.itarocha.star.model.Coordenada;
 import br.itarocha.star.model.Cuspide;
 import br.itarocha.star.model.ItemAspecto;
 import br.itarocha.star.model.PlanetaPosicao;
-//import br.itarocha.star.model.TempoUniversal;
 
 public class Mapa {
 	private String nome;
@@ -35,15 +34,12 @@ public class Mapa {
 	private List<Cuspide> cuspides = new ArrayList<Cuspide>();
 	private List<PlanetaPosicao> posicoesPlanetas = new ArrayList<PlanetaPosicao>();
 	
-	public Mapa(String nome, String data, String hora, Cidade cidade) {
+
+	public Mapa(String nome, Calendar dataHora, Cidade cidade) {
 		try {
 			this.nome = nome;
-			this.tu = new TempoUniversalLocal(data + " " + hora, cidade.getFuso());
-			
-			calendar = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-				calendar.setTime(sdf.parse(data + " " + hora));
-			
+			this.tu = new TempoUniversalLocal(dataHora, cidade.getFuso());
+			this.calendar = dataHora;
 			make(nome, cidade.getFuso(), cidade.getLatitude(), cidade.getLongitude());
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -189,9 +185,10 @@ public class Mapa {
 		private LocalDateTime localDateTime;
 
 		private double horaDouble;
-		
-		public TempoUniversalLocal(String sdatahora, int fuso) throws ParseException {
-			Date dateAqui = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(sdatahora);
+
+		public TempoUniversalLocal(Calendar cdatahora, int fuso) throws ParseException {
+			Date dateAqui = cdatahora.getTime();
+			//Date dateAqui = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(sdatahora);
 			this.localDateTime = dateAqui.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 			LocalDateTime ldtLondon = localDateTime.plusHours(fuso * -1);
 			int hora = ldtLondon.getHour();
@@ -199,7 +196,7 @@ public class Mapa {
 			int segundo = ldtLondon.getSecond();
 			this.horaDouble = hora + minuto / 60.0 + segundo / 3600.0;
 		}
-
+		
 		public LocalDateTime getLocalDateTime() {
 			return this.localDateTime;
 		}

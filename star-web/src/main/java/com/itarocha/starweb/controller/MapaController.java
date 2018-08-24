@@ -1,44 +1,29 @@
 package com.itarocha.starweb.controller;
 
-import java.awt.PageAttributes.MediaType;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-//import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.data.web.PageableDefault;
-//import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -63,17 +48,6 @@ import br.itarocha.star.Mapa;
 import br.itarocha.star.MapaBuilder;
 import de.thmac.swisseph.SweConst;
 import de.thmac.swisseph.SwissEph;
-
-/*
-import br.itarocha.star.DecoradorMapa;
-import br.itarocha.star.Mapa;
-import br.itarocha.star.MapaBuilder;
-import br.itarocha.star.MapeadorCidades;
-import br.itarocha.star.StarMain;
-*/
-//import swisseph.SweConst;
-//import swisseph.SwissEph;
-
 
 @Controller
 @RequestMapping("mapa")
@@ -150,7 +124,6 @@ public class MapaController {
 			return PAGINA_EDIT;
 		}
 		
-		
 		ServletContext context = request.getSession().getServletContext();
         String appPath = context.getRealPath("");
         appPath = new ClassPathResource("images").getPath();
@@ -174,18 +147,29 @@ public class MapaController {
 			return PAGINA_EDIT;
 		}
 	}
-
 	
-	private List<Interpretacao> constroiMapa(Cliente model, String path){
+	private List<Interpretacao> constroiMapa(Cliente model, String path) {
 		List<Interpretacao> retorno =  new ArrayList<Interpretacao>();
 		MapaBuilder builder = null;
+		Calendar calendar = Calendar.getInstance();
+		
 		try {
 			builder = MapaBuilder.getInstance(path);
+		
+		calendar = Calendar.getInstance();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		SimpleDateFormat sdfd = new SimpleDateFormat("dd/MM/yyyy");
+		
+		String data = sdfd.format(model.getDataNascimento());
+		
+		calendar.setTime(sdf.parse(data + " " + model.getHoraNascimento()));
+		
 		} catch (Exception e) {
 			return retorno;
 		}
 		
-		Mapa mapa = builder.build(model.getNome(), model.getDataNascimento(), model.getHoraNascimento(), model.getCidade(), model.getUf());
+		Mapa mapa = builder.build(model.getNome(), calendar, model.getCidade(), model.getUf());
 		if (mapa != null) {
 			ChartPainter cp = new ChartPainter(mapa,path);
 			String json = new DecoradorMapa(mapa).getJSON();

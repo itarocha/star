@@ -1,24 +1,17 @@
 package br.itarocha.star;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Logger;
 
 import br.itarocha.star.model.Cidade;
 import br.itarocha.star.model.Cuspide;
 import br.itarocha.star.model.EnumAspecto;
 import br.itarocha.star.model.EnumPlaneta;
-import br.itarocha.star.model.EnumSigno;
 import br.itarocha.star.model.ItemAspecto;
 import br.itarocha.star.model.PlanetaPosicao;
 import br.itarocha.star.util.Funcoes;
 import de.thmac.swisseph.SweConst;
 import de.thmac.swisseph.SweDate;
-//import swisseph.SweConst;
-//import swisseph.SweDate;
-//import swisseph.SwissEph;
 import de.thmac.swisseph.SwissEph;
 
 
@@ -60,42 +53,18 @@ public class MapaBuilder {
 			throw e;
 		}
 	}
-	
-	public Mapa build(String nome, String data, String hora, String cidade, String uf) {
-		MapeadorCidades mapeador = MapeadorCidades.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat(FORMATO_DATA);
-		Date d;
-		try {
-			d = sdf.parse(data);
-		} catch (ParseException e) {
-			d = Calendar.getInstance().getTime();
-		}
 
+	public Mapa build(String nome, Calendar dataHora, String cidade, String uf) {
+		MapeadorCidades mapeador = MapeadorCidades.getInstance();
+		
 		Cidade c = mapeador.getCidade(cidade, uf);
 		if (c != null) {
-			return build(nome, d, hora, c);
+			//return build(nome, d, hora, c);
+			Mapa m = new Mapa(nome, dataHora, c);
+			calcular(m); 
+			return m;
 		}
 		return null;
-	}
-
-	public Mapa build(String nome, Date data, String hora, String cidade, String uf) {
-		MapeadorCidades mapeador = MapeadorCidades.getInstance();
-		Cidade c = mapeador.getCidade(cidade, uf);
-		if (c != null) {
-			return build(nome, data, hora, c);
-		} else {
-			System.out.println("Cidade nao encontrada");
-		}
-		return null;
-	}
-
-	// Principal
-	public Mapa build(String nome, Date data, String hora, Cidade cidade){
-		SimpleDateFormat sdf = new SimpleDateFormat(FORMATO_DATA);
-		String d = sdf.format(data);
-		Mapa m = new Mapa(nome, d, hora, cidade);
-		calcular(m); 
-		return m;
 	}
 	
 	// TODO: Deve retornar uma classe Mapa

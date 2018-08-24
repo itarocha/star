@@ -1,6 +1,7 @@
 package br.itarocha.star;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import br.itarocha.star.model.Cidade;
@@ -61,9 +62,11 @@ public class StarMain {
 		MapaBuilder construtor = MapaBuilder.getInstance(".");
 		Cidade c = MapeadorCidades.getInstance().getCidade(cidade, uf);
 		if (c != null){
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			Date d = sdf.parse(data);
-    		retorno = construtor.build(nome, d, hora, c);
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			Date d = sdf.parse(data + " "+hora);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(d);
+    		retorno = construtor.build(nome, cal, cidade, uf);
 		} else {
 			System.out.println("Nao conseguiu localizar cidade");
 		}
